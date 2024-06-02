@@ -16,13 +16,14 @@ export class CarService {
       {
         id: 1,
         brand: 'mercedes',
-        age: 2015,
+        date: new Date(),
+        millage: null,
       },
       {
         id: 2,
         brand: 'honda',
-        age: 2010,
-        milllage: 100000,
+        date: new Date(),
+        millage: null,
       },
     ];
   }
@@ -39,8 +40,8 @@ export class CarService {
     return {
       id,
       brand: 'honda',
-      age: 2010,
-      milllage: 100000,
+      date: new Date(),
+      millage: 100000,
     };
   }
 }
