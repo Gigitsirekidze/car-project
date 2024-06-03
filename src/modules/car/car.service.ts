@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CarDto } from './dto/car.dto';
+import { CarBrands } from './enums/car-brands';
 
 @Injectable()
 export class CarService {
   addCar(body: CarDto): string {
     console.log('car add simulation: ', body);
+
+    throw new HttpException({ error: 'internal esfgsf' }, HttpStatus.NOT_FOUND);
 
     return 'OK';
   }
@@ -15,13 +18,13 @@ export class CarService {
     return [
       {
         id: 1,
-        brand: 'mercedes',
+        brand: CarBrands.BMW,
         date: new Date(),
         millage: null,
       },
       {
         id: 2,
-        brand: 'honda',
+        brand: CarBrands.BMW,
         date: new Date(),
         millage: null,
       },
@@ -39,7 +42,7 @@ export class CarService {
 
     return {
       id,
-      brand: 'honda',
+      brand: CarBrands.HONDA,
       date: new Date(),
       millage: 100000,
     };

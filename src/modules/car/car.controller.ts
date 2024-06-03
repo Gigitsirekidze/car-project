@@ -5,11 +5,16 @@ import {
   Get,
   Param,
   Post,
-  Query,
+  Query, UseFilters,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '../auth/auth.guard';
 import { CarService } from './car.service';
 import { CarDto } from './dto/car.dto';
+import { CarFilter } from './filters/car-filter';
 
+@UseFilters(CarFilter)
+@UseGuards(AuthGuard)
 @Controller('car')
 export class CarController {
   constructor(private readonly carService: CarService) {}

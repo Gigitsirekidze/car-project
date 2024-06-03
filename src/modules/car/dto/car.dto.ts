@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { CarBrands } from '../enums/car-brands';
 import { CustomValidator } from '../validator-decorators/custom-validator';
 
 export class CarDto {
@@ -7,9 +8,9 @@ export class CarDto {
   @IsNotEmpty()
   id: number;
 
-  @IsString()
+  @IsEnum(CarBrands)
   @IsNotEmpty()
-  brand: string;
+  brand: CarBrands;
 
   @IsNotEmpty()
   @Type(() => Date)
