@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CarDto } from './dto/car.dto';
 import { CarBrands } from './enums/car-brands';
 
@@ -6,8 +6,6 @@ import { CarBrands } from './enums/car-brands';
 export class CarService {
   addCar(body: CarDto): string {
     console.log('car add simulation: ', body);
-
-    throw new HttpException({ error: 'internal esfgsf' }, HttpStatus.NOT_FOUND);
 
     return 'OK';
   }

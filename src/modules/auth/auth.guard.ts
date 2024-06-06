@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
@@ -11,6 +16,14 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const { headers } = context.switchToHttp().getRequest();
 
-    return this.authService.validate(headers.token);
+    const requestBody = this.authService.validate(headers.authorization);
+
+    if (!requestBody) {
+      throw new UnauthorizedException({ error: 'unauthorized' });
+    }
+
+    context.switchToHttp().getRequest().body = requestBody;
+
+    return true;
   }
 }

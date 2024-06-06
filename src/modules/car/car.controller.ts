@@ -6,15 +6,17 @@ import {
   Param,
   Post,
   Query, UseFilters,
-  UseGuards,
+  UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { CarService } from './car.service';
 import { CarDto } from './dto/car.dto';
 import { CarFilter } from './filters/car-filter';
+import { CarInterceptor } from './interceptors/car.interceptor';
 
 @UseFilters(CarFilter)
 @UseGuards(AuthGuard)
+@UseInterceptors(CarInterceptor)
 @Controller('car')
 export class CarController {
   constructor(private readonly carService: CarService) {}
