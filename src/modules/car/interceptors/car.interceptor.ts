@@ -4,7 +4,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class CarInterceptor implements NestInterceptor {
@@ -21,16 +21,6 @@ export class CarInterceptor implements NestInterceptor {
 
     context.switchToHttp().getRequest().body = desiredRequest;
 
-    return next.handle().pipe(
-      map(() => {
-        const desiredResponse = {};
-
-        Object.keys(requestBody).forEach((item) => {
-          desiredResponse[item.toUpperCase()] = requestBody[item];
-        });
-
-        return desiredResponse;
-      }),
-    );
+    return next.handle();
   }
 }

@@ -1,48 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CarDto } from './dto/car.dto';
-import { CarBrands } from './enums/car-brands';
+import { CarEntity } from './entities/car.entity';
 
 @Injectable()
 export class CarService {
-  addCar(body: CarDto): string {
+  constructor(
+    @InjectRepository(CarEntity)
+    private readonly carRepository: Repository<CarEntity>,
+  ) {}
+
+  addCar(body: CarDto): Promise<CarEntity> {
     console.log('car add simulation: ', body);
 
-    return 'OK';
+    return this.carRepository.save<CarEntity>(body);
   }
 
-  getAllCars(): CarDto[] {
+  async getAllCars(): Promise<CarEntity[]> {
     console.log('simulating get all cars');
 
-    return [
-      {
-        id: 1,
-        brand: CarBrands.BMW,
-        date: new Date(),
-        millage: null,
-      },
-      {
-        id: 2,
-        brand: CarBrands.BMW,
-        date: new Date(),
-        millage: null,
-      },
-    ];
+    return this.carRepository.find();
   }
 
-  deleteOneCar(id: number): string {
+  deleteOneCar(id: number): any {
     console.log('delete car with id: ', id);
 
-    return 'OK';
+    return this.carRepository.delete({ id });
   }
 
-  getCarDetails(id: number): CarDto {
+  async getCarDetails(id: number): Promise<CarEntity> {
     console.log('car details with id: ', id);
 
-    return {
-      id,
-      brand: CarBrands.HONDA,
-      date: new Date(),
-      millage: 100000,
-    };
+    return this.carRepository.findOneByOrFail({ id }).catch(() => {
+      throw new HttpException(
+        { error: `car with id: ${id} not found` },
+        HttpStatus.NOT_FOUND,
+      );
+    });
   }
 }

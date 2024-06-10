@@ -5,12 +5,15 @@ import {
   Get,
   Param,
   Post,
-  Query, UseFilters,
-  UseGuards, UseInterceptors,
+  Query,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { CarService } from './car.service';
 import { CarDto } from './dto/car.dto';
+import { CarEntity } from './entities/car.entity';
 import { CarFilter } from './filters/car-filter';
 import { CarInterceptor } from './interceptors/car.interceptor';
 
@@ -22,22 +25,22 @@ export class CarController {
   constructor(private readonly carService: CarService) {}
 
   @Post('/add')
-  addCar(@Body() carDto: CarDto): string {
+  addCar(@Body() carDto: CarDto): Promise<CarEntity> {
     return this.carService.addCar(carDto);
   }
 
   @Get('/get-all')
-  getAllCars(): CarDto[] {
+  async getAllCars(): Promise<CarEntity[]> {
     return this.carService.getAllCars();
   }
 
   @Delete()
-  deleteOneCar(@Query() { id }): string {
+  deleteOneCar(@Query() { id }): any {
     return this.carService.deleteOneCar(id);
   }
 
   @Get('/:id')
-  carDetails(@Param() { id }): CarDto {
+  carDetails(@Param() { id }): Promise<CarEntity> {
     return this.carService.getCarDetails(id);
   }
 }
