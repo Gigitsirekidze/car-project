@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CarModule } from '../car/car.module';
+import { OwnerModule } from '../owner/owner.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -16,6 +17,7 @@ import { AppService } from './app.service';
       synchronize: true,
     }),
     CarModule,
+    OwnerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

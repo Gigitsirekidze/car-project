@@ -12,14 +12,14 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { CarService } from './car.service';
-import { CarDto } from './dto/car.dto';
+import { CarDto, OwnCarDto } from './dto';
 import { CarEntity } from './entities/car.entity';
 import { CarFilter } from './filters/car-filter';
 import { CarInterceptor } from './interceptors/car.interceptor';
 
 @UseFilters(CarFilter)
 @UseGuards(AuthGuard)
-@UseInterceptors(CarInterceptor)
+//@UseInterceptors(CarInterceptor)
 @Controller('car')
 export class CarController {
   constructor(private readonly carService: CarService) {}
@@ -42,5 +42,10 @@ export class CarController {
   @Get('/:id')
   carDetails(@Param() { id }): Promise<CarEntity> {
     return this.carService.getCarDetails(id);
+  }
+
+  @Post('/own')
+  ownCar(@Body() ownCarDto: OwnCarDto) {
+    return this.carService.ownCar(ownCarDto);
   }
 }
