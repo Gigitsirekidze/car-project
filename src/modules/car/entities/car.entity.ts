@@ -1,4 +1,12 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity, JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
+import { DealershipEntity } from '../../dealership/entities';
 import { OwnerEntity } from '../../owner/entities';
 import { CarBrands } from '../enums/car-brands';
 
@@ -20,4 +28,10 @@ export class CarEntity {
     nullable: true,
   })
   owner?: OwnerEntity;
+
+  @JoinTable({ name: 'car_dealership' })
+  @ManyToMany(() => DealershipEntity, (dealership) => dealership.cars, {
+    nullable: true,
+  })
+  dealerships?: DealershipEntity[];
 }

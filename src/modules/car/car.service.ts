@@ -23,7 +23,7 @@ export class CarService {
   async getAllCars(): Promise<CarEntity[]> {
     console.log('simulating get all cars');
 
-    return this.carRepository.find({ relations: ['owner'] });
+    return this.carRepository.find({ relations: ['owner', 'dealerships'] });
   }
 
   deleteOneCar(id: number): any {
@@ -36,7 +36,7 @@ export class CarService {
     console.log('car details with id: ', id);
 
     return this.carRepository
-      .findOneOrFail({ where: { id }, relations: ['owner'] })
+      .findOneOrFail({ where: { id }, relations: ['owner', 'dealerships'] })
       .catch(() => {
         throw new HttpException(
           { error: `car with id: ${id} not found` },
@@ -45,7 +45,7 @@ export class CarService {
       });
   }
 
-  async ownCar(ownCarDto: OwnCarDto) {
+  async ownCar(ownCarDto: OwnCarDto): Promise<CarEntity> {
     const ownerFromDb = await this.ownerRepository.findOneByOrFail({
       id: ownCarDto.ownerId,
     });
