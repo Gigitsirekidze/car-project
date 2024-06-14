@@ -10,6 +10,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { CarService } from './car.service';
 import { CarDto, OwnCarDto } from './dto';
@@ -19,6 +20,7 @@ import { CarInterceptor } from './interceptors/car.interceptor';
 
 @UseFilters(CarFilter)
 @UseGuards(AuthGuard)
+@ApiTags('car')
 //@UseInterceptors(CarInterceptor)
 @Controller('car')
 export class CarController {

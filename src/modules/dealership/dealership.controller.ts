@@ -8,6 +8,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { DealershipService } from './dealership.service';
 import { DealershipDto } from './dto';
@@ -15,6 +16,7 @@ import { AttachCarDto } from './dto/attach-car.dto';
 import { DealershipEntity } from './entities';
 
 @UseGuards(AuthGuard)
+@ApiTags('dealership')
 @Controller('dealership')
 export class DealershipController {
   constructor(private readonly dealershipService: DealershipService) {}

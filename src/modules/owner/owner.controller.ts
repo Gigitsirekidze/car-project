@@ -8,12 +8,14 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
 import { OwnerDto } from './dto';
 import { OwnerEntity } from './entities';
 import { OwnerService } from './owner.service';
 
 @UseGuards(AuthGuard)
+@ApiTags('owner')
 @Controller('owner')
 export class OwnerController {
   constructor(private readonly ownerService: OwnerService) {}
