@@ -1,21 +1,9 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Query,
-  UseFilters,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseFilters, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { CarService } from './car.service';
 import { CarDto, OwnCarDto } from './dto';
 import { CarEntity } from './entities/car.entity';
 import { CarFilter } from './filters/car-filter';
-import { CarInterceptor } from './interceptors/car.interceptor';
 
 @UseFilters(CarFilter)
 @UseGuards(AuthGuard)
