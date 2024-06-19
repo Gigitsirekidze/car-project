@@ -3,8 +3,8 @@ import { Gender } from '../enums';
 
 export class OwnerDto {
   @IsNotEmpty()
-  @IsNumber()
-  id: number;
+  @IsString()
+  username: string;
 
   @IsNotEmpty()
   @IsString()

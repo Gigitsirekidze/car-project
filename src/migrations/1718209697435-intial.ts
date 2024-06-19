@@ -7,8 +7,8 @@ export class Intial1718209697435 implements MigrationInterface {
         name: 'owner',
         columns: [
           {
-            name: 'id',
-            type: 'int',
+            name: 'username',
+            type: 'varchar',
             isNullable: false,
             isPrimary: true,
           },
@@ -58,7 +58,7 @@ export class Intial1718209697435 implements MigrationInterface {
           },
           {
             name: 'ownerId',
-            type: 'int',
+            type: 'varchar',
             isNullable: true,
           },
         ],
@@ -66,7 +66,7 @@ export class Intial1718209697435 implements MigrationInterface {
           {
             columnNames: ['ownerId'],
             referencedTableName: 'owner',
-            referencedColumnNames: ['id'],
+            referencedColumnNames: ['username'],
             onDelete: 'SET NULL',
             onUpdate: 'CASCADE',
           },

@@ -1,11 +1,12 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { CarEntity } from '../../car/entities/car.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 import { Gender } from '../enums';
 
 @Entity('owner')
 export class OwnerEntity {
-  @PrimaryColumn({ name: 'id' })
-  id: number;
+  @PrimaryColumn({ name: 'username' })
+  username: string;
 
   @Column({ name: 'name' })
   name: string;
@@ -21,4 +22,9 @@ export class OwnerEntity {
     nullable: true,
   })
   cars?: CarEntity[];
+
+  @OneToOne(() => UserEntity, (user) => user.owner, {
+    nullable: true,
+  })
+  user?: UserEntity;
 }
