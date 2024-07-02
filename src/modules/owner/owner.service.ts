@@ -23,20 +23,20 @@ export class OwnerService {
     return this.ownerRepository.find({ relations: ['cars'] });
   }
 
-  deleteOneOwner(id: number): any {
-    console.log('delete owner with id: ', id);
+  deleteOneOwner(username: string): any {
+    console.log('delete owner: ', username);
 
-    return this.ownerRepository.delete({ id });
+    return this.ownerRepository.delete({ username });
   }
 
-  async getOwnerDetails(id: number): Promise<OwnerEntity> {
-    console.log('owner details with id: ', id);
+  async getOwnerDetails(username: string): Promise<OwnerEntity> {
+    console.log('owner details with id: ', username);
 
     return this.ownerRepository
-      .findOneOrFail({ where: { id }, relations: ['cars'] })
+      .findOneOrFail({ where: { username }, relations: ['cars'] })
       .catch(() => {
         throw new HttpException(
-          { error: `owner with id: ${id} not found` },
+          { error: `owner ${username} not found` },
           HttpStatus.NOT_FOUND,
         );
       });

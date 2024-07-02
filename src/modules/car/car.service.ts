@@ -47,7 +47,7 @@ export class CarService {
 
   async ownCar(ownCarDto: OwnCarDto): Promise<CarEntity> {
     const ownerFromDb = await this.ownerRepository.findOneByOrFail({
-      id: ownCarDto.ownerId,
+      username: ownCarDto.ownerId,
     });
 
     const carFromDb = await this.carRepository.findOneByOrFail({

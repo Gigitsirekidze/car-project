@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity, JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 import { DealershipEntity } from '../../dealership/entities';
 import { OwnerEntity } from '../../owner/entities';
 import { CarBrands } from '../enums/car-brands';

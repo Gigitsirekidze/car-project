@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import config from '../../config';
+import config from '../../common/config';
 import { CarModule } from '../car/car.module';
 import { DealershipModule } from '../dealership/dealership.module';
 import { OwnerModule } from '../owner/owner.module';
+import { UserModule } from '../user/user.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -29,6 +30,7 @@ import { AppService } from './app.service';
     CarModule,
     OwnerModule,
     DealershipModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

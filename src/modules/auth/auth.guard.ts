@@ -4,25 +4,53 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import { Reflector } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
+import { IS_PUBLIC_KEY } from '../../common/decorators/public.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly reflector: Reflector,
+  ) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const { headers } = context.switchToHttp().getRequest();
+  private getToken(headers: any): string {
+    const [type, token] = headers.authorization?.split(' ');
 
-    const requestBody = this.authService.validate(headers.authorization);
-
-    if (!requestBody) {
-      throw new UnauthorizedException({ error: 'unauthorized' });
+    if (!(type === 'Bearer')) {
+      throw new Error();
     }
 
-    context.switchToHttp().getRequest().body = requestBody;
+    return token;
+  }
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.getAllAndOverride(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (isPublic) {
+      return true;
+    }
+
+    const request = context.switchToHttp().getRequest();
+
+    let token;
+    try {
+      token = this.getToken(request.headers);
+    } catch (e) {
+      throw new UnauthorizedException();
+    }
+
+    request['user'] = await this.jwtService
+      .verifyAsync(token, {
+        secret: process.env.SECRET_KEY,
+      })
+      .catch(() => {
+        throw new UnauthorizedException();
+      });
 
     return true;
   }

@@ -64,6 +64,7 @@ export class Intial1718209697435 implements MigrationInterface {
         ],
         foreignKeys: [
           {
+            name: 'FK_owner',
             columnNames: ['ownerId'],
             referencedTableName: 'owner',
             referencedColumnNames: ['id'],
