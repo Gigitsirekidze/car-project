@@ -1,5 +1,7 @@
+import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { lastValueFrom } from 'rxjs';
 import { Repository } from 'typeorm';
 import { OwnerEntity } from '../owner/entities';
 import { OwnCarRequestDto, AddCarRequestDto, AddCarResponseDto } from './dto';
@@ -15,6 +17,7 @@ export class CarService {
     @InjectRepository(OwnerEntity)
     private readonly ownerRepository: Repository<OwnerEntity>,
     private readonly responseMappers: ResponseMappers,
+    private httpService: HttpService,
   ) {}
 
   async addCar(body: AddCarRequestDto): Promise<AddCarResponseDto> {
@@ -59,6 +62,14 @@ export class CarService {
     const carFromDb = await this.carRepository.findOneByOrFail({
       id: ownCarDto.carId,
     });
+
+    const source = this.httpService.get(
+      `https://open.er-api.com/v6/latest/${ownCarDto.currency}`,
+    );
+
+    const { data } = await lastValueFrom(source);
+
+    console.log(data);
 
     ownerFromDb.cars = ownerFromDb.cars || [];
 

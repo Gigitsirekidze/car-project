@@ -1,17 +1,13 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class OwnCarRequestDto {
+export class DepositRequestDto {
   @IsNotEmpty()
   @IsString()
-  ownerId: string;
+  username: string;
 
   @IsNotEmpty()
   @IsString()
   currency: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  carId: number;
 
   @IsNotEmpty()
   @IsNumber()

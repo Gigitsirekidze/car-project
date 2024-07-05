@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OwnerDto } from './dto';
+import { DepositRequestDto } from './dto/deposit-request.dto';
 import { OwnerEntity } from './entities';
 
 @Injectable()
@@ -40,5 +41,16 @@ export class OwnerService {
           HttpStatus.NOT_FOUND,
         );
       });
+  }
+
+  async deposit(depositRequestDto: DepositRequestDto) {
+    const owner = await this.ownerRepository.findOneOrFail({
+      where: { username: depositRequestDto.username },
+      relations: ['balances'],
+    });
+
+    const balanceInCurrency = owner.balances.find((item) => item.currency === depositRequestDto.currency)
+
+    if(owner.balances.find())
   }
 }

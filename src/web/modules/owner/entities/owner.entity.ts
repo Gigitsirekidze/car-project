@@ -1,7 +1,15 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { CarEntity } from '../../car/entities/car.entity';
 import { UserEntity } from '../../user/entities';
 import { Gender } from '../enums';
+import { BalanceEntity } from './balance.entity';
 
 @Entity('owner')
 export class OwnerEntity {
@@ -28,4 +36,9 @@ export class OwnerEntity {
     cascade: true,
   })
   user?: UserEntity;
+
+  @OneToMany(() => BalanceEntity, (balance) => balance.owner, {
+    nullable: false,
+  })
+  balances?: BalanceEntity[];
 }
