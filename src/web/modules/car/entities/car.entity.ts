@@ -1,4 +1,12 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { DealershipEntity } from '../../dealership/entities';
 import { OwnerEntity } from '../../owner/entities';
 import { CarBrands } from '../enums/car-brands';
@@ -13,6 +21,9 @@ export class CarEntity {
 
   @Column({ name: 'date' })
   date: Date;
+
+  @Column({ name: 'price', nullable: false })
+  price: number;
 
   @Column({ name: 'millage', nullable: true })
   millage?: number;

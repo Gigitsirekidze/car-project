@@ -17,6 +17,10 @@ export class AddCarRequestDto {
   date: Date;
 
   @IsNumber()
+  @IsNotEmpty()
+  price: number;
+
+  @IsNumber()
   @IsOptional()
   @CustomValidator()
   millage: number;

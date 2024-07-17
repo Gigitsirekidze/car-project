@@ -52,7 +52,7 @@ export class CarController {
     return this.carService.getCarDetails(id);
   }
 
-  @Roles(Role.USER)
+  @Roles(Role.USER, Role.ADMIN)
   @Post('/own')
   ownCar(@Body() ownCarDto: OwnCarRequestDto): Promise<OwnCarResponseDto> {
     return this.carService.ownCar(ownCarDto);

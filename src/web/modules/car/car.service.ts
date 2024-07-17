@@ -1,5 +1,7 @@
+import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { lastValueFrom } from 'rxjs';
 import { Repository } from 'typeorm';
 import { OwnerEntity } from '../owner/entities';
 import { OwnCarRequestDto, AddCarRequestDto, AddCarResponseDto } from './dto';
@@ -15,6 +17,7 @@ export class CarService {
     @InjectRepository(OwnerEntity)
     private readonly ownerRepository: Repository<OwnerEntity>,
     private readonly responseMappers: ResponseMappers,
+    private readonly httpService: HttpService,
   ) {}
 
   async addCar(body: AddCarRequestDto): Promise<AddCarResponseDto> {
@@ -53,12 +56,33 @@ export class CarService {
       where: {
         username: ownCarDto.ownerId,
       },
-      relations: ['cars'],
+      relations: ['cars', 'balances'],
     });
 
     const carFromDb = await this.carRepository.findOneByOrFail({
       id: ownCarDto.carId,
     });
+
+    const balanceInCurrency = ownerFromDb.balances.find(
+      (balance) => balance.currency === ownCarDto.currency,
+    );
+
+    const source = this.httpService.get(
+      `https://open.er-api.com/v6/latest/USD`,
+    );
+
+    const { data } = await lastValueFrom(source);
+
+    const carPriceInCurrency = carFromDb.price * data.rates[ownCarDto.currency];
+
+    if (!balanceInCurrency || balanceInCurrency.amount < carPriceInCurrency) {
+      throw new HttpException(
+        { error: 'insufficient balance' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    balanceInCurrency.amount -= carPriceInCurrency;
 
     ownerFromDb.cars = ownerFromDb.cars || [];
 

@@ -17,7 +17,7 @@ export class User1718810231211 implements MigrationInterface {
             name: 'username',
             type: 'varchar',
             isNullable: false,
-            isPrimary: true,
+            isPrimary: true
           },
           {
             name: 'role',
